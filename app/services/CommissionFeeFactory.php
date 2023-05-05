@@ -10,14 +10,14 @@ use App\services\Withdrawals\PrivateClientWithdrawal;
 
 class CommissionFeeFactory
 {
-    public static function getOperationType($operationType, $userType)
+    public static function getOperationType($userInteractions)
     {
-        return match ($operationType) {
-            OperationType::WITHDRAW->value => match ($userType) {
-                UserType::PRIVATE->value => new PrivateClientWithdrawal(),
-                UserType::BUSINESS->value => new BusinessClientWithdrawal()
+        return match ($userInteractions['operationType']) {
+            OperationType::WITHDRAW->value => match ($userInteractions['userType']) {
+                UserType::PRIVATE->value => PrivateClientWithdrawal::handleWithdraw($userInteractions),
+                UserType::BUSINESS->value => BusinessClientWithdrawal::handleWithdraw($userInteractions)
             },
-            OperationType::DEPOSIT->value => new Deposit()
+            OperationType::DEPOSIT->value => Deposit::handleDeposit($userInteractions)
         };
     }
 }

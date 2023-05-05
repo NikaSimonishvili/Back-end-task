@@ -7,8 +7,8 @@ use App\Interfaces\WithdrawInterface;
 class PrivateClientWithdrawal implements WithdrawInterface
 {
 
-    public function handleWithdraw()
+    public static function handleWithdraw($userInteractions)
     {
-        // TODO: Implement handleWithdraw() method.
+        return '';
     }
 }

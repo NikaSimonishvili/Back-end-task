@@ -2,13 +2,13 @@
 
 namespace App\services\Deposits;
 
-use App\Interfaces\WithdrawInterface;
+use App\Actions\ChargePercentageAction;
+use App\Interfaces\DepositInterface;
 
 class Deposit implements DepositInterface
 {
-
-    public function handleDeposit()
+    public static function handleDeposit($userInteractions)
     {
-        // TODO: Implement handleDeposit() method.
+        return ChargePercentageAction::handle($userInteractions['amount'], 0.03);
     }
 }

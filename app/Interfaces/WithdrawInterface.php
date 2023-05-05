@@ -4,5 +4,5 @@ namespace App\Interfaces;
 
 interface WithdrawInterface
 {
-    public function handleWithdraw();
+    public static function handleWithdraw($userInteractions);
 }

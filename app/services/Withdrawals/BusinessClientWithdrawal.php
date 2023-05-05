@@ -2,13 +2,13 @@
 
 namespace App\services\Withdrawals;
 
+use App\Actions\ChargePercentageAction;
 use App\Interfaces\WithdrawInterface;
 
 class BusinessClientWithdrawal implements WithdrawInterface
 {
-
-    public function handleWithdraw()
+    public static function handleWithdraw($userInteractions)
     {
-        // TODO: Implement handleWithdraw() method.
+       return ChargePercentageAction::handle($userInteractions['amount'], 0.5);
     }
 }

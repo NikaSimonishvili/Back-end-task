@@ -38,11 +38,11 @@ class CommissionFee extends Command
             while (($data = fgetcsv($file, 0, ',')) !== false) {
                 $this->saveUsersDataInArray($users, $data);
 
-                $provider = CommissionFeeFactory::getOperationType($users GAFILTRULI, USERIS AIDIT)
+                $results[] = CommissionFeeFactory::getOperationType(end($users[$data[1]]));
             }
-            dd($users);
-
             fclose($file);
+
+            var_dump($results);
         }
     }
 
