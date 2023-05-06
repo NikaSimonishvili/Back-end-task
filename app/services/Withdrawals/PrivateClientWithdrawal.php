@@ -16,12 +16,14 @@ class PrivateClientWithdrawal implements WithdrawInterface
     {
         $transactionCurrency = $userInteractions['operationCurrency'];
 
-        // check if currency is not EUR and if not exchange it
+        // Convert amount with needs
         $userInteractions['amount'] = ExchangeCurrency::handle(
             $userInteractions['amount'],
             $transactionCurrency,
             'EUR'
         );
+
+        $userInteractions['amount'] = ceil($userInteractions['amount'] * pow(10, 2)) / pow(10, 2);
 
         // Get the start and end date of the week
         $startDate = Carbon::parse($userInteractions['operationDate'])->startOfWeek();
@@ -54,7 +56,7 @@ class PrivateClientWithdrawal implements WithdrawInterface
 
                 if ($totalWithdrawalsThisWeek > 1000) {
                     $exceededAmount = $totalWithdrawalsThisWeek - 1000;
-                    $fee = $exceededAmount * (0.3 / 100);
+                    $fee = $exceededAmount * (config('fees.withdraw.private') / 100);
                     return number_format((float)$fee, 2, '.', '');
                 }
 
@@ -62,7 +64,7 @@ class PrivateClientWithdrawal implements WithdrawInterface
                 if (count(self::$withdrawalsThisWeek[$userInteractions['userId']]) <= 3) {
                     return number_format(0.0, 2, '.', '');
                 } elseif (count(self::$withdrawalsThisWeek[$userInteractions['userId']]) > 3) {
-                    $fee = $userInteractions['amount'] * (0.3 / 100);
+                    $fee = $userInteractions['amount'] * (config('fees.withdraw.private') / 100);
                     return number_format((float)$fee, 2, '.', '');
                 }
 
@@ -74,7 +76,7 @@ class PrivateClientWithdrawal implements WithdrawInterface
 
                 if ($userInteractions['amount'] > 1000) {
                     $exceededAmount = $userInteractions['amount'] - 1000;
-                    return $exceededAmount * (0.3 / 100);
+                    return $exceededAmount * (config('fees.withdraw.private') / 100);
                 } else {
                     return number_format(0.0, 2, '.', '');
                 }
@@ -86,7 +88,7 @@ class PrivateClientWithdrawal implements WithdrawInterface
 
             if ($userInteractions['amount'] > 1000) {
                 $exceededAmount = $userInteractions['amount'] - 1000;
-                $fee = $exceededAmount * (0.3 / 100);
+                $fee = $exceededAmount * (config('fees.withdraw.private') / 100);
                 return number_format((float)$fee, 2, '.', '');
             }
             return number_format(0.0, 2, '.', '');

@@ -9,7 +9,7 @@ class Deposit implements DepositInterface
 {
     public static function handleDeposit($userInteractions)
     {
-        $fee = $userInteractions['amount'] * (0.03 / 100);
+        $fee = $userInteractions['amount'] * (config('fees.deposit') / 100);
 
         return number_format((float)$fee, 2, '.', '');
     }

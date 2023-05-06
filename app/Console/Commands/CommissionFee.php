@@ -47,7 +47,7 @@ class CommissionFee extends Command
         }
     }
 
-    private function saveUsersDataInArray(array &$users, array $data)
+    private function saveUsersDataInArray(array &$users, array $data): void
     {
         $users[$data[1]][] = [
             'userId' => $data[1],
