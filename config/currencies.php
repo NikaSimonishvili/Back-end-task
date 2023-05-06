@@ -7,5 +7,6 @@ return [
     'currencies' => [
         'USD' => '',
         'JPY' => '',
+        'EUR' => '',
     ]
 ];

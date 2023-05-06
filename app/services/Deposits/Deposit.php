@@ -9,6 +9,8 @@ class Deposit implements DepositInterface
 {
     public static function handleDeposit($userInteractions)
     {
-        return ChargePercentageAction::handle($userInteractions['amount'], 0.03);
+        $fee = $userInteractions['amount'] * (0.03 / 100);
+
+        return number_format((float)$fee, 2, '.', '');
     }
 }

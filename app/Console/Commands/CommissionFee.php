@@ -28,7 +28,6 @@ class CommissionFee extends Command
     public function handle()
     {
         $results = [];
-
         SetCurrenciesAction::handle();
 
         $file = fopen(storage_path('app/public/' . $this->argument('fileName') . '.csv'), 'r');
@@ -42,13 +41,16 @@ class CommissionFee extends Command
             }
             fclose($file);
 
-            var_dump($results);
+            foreach ($results as $result) {
+                $this->info($result);
+            }
         }
     }
 
     private function saveUsersDataInArray(array &$users, array $data)
     {
         $users[$data[1]][] = [
+            'userId' => $data[1],
             'operationDate' => $data[0],
             'userType' => $data[2],
             'operationType' => $data[3],

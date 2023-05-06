@@ -13,5 +13,6 @@ class SetCurrenciesAction
 
         Config::set('currencies.currencies.USD', $rates['rates']['USD']);
         Config::set('currencies.currencies.JPY', $rates['rates']['JPY']);
+        Config::set('currencies.currencies.EUR', $rates['rates']['EUR']);
     }
 }

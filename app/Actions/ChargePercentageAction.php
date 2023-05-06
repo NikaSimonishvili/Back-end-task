@@ -6,8 +6,7 @@ class ChargePercentageAction
 {
     public static function handle($amount, $percentage)
     {
-        $feePercentage = $percentage;
-        $fee = $amount * ($feePercentage / 100);
+        $fee = $amount * ($percentage / 100);
 
         return (number_format($amount - $fee, 2, '.', ''));
     }

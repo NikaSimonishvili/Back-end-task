@@ -9,6 +9,8 @@ class BusinessClientWithdrawal implements WithdrawInterface
 {
     public static function handleWithdraw($userInteractions)
     {
-       return ChargePercentageAction::handle($userInteractions['amount'], 0.5);
+        $fee = $userInteractions['amount'] * (0.5 / 100);
+
+        return number_format((float)$fee, 2, '.', '');
     }
 }
