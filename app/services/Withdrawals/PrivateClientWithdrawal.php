@@ -64,7 +64,6 @@ class PrivateClientWithdrawal implements WithdrawInterface
                 } elseif (count(self::$withdrawalsThisWeek[$userInteractions['userId']]) > 3) {
                     $fee = $userInteractions['amount'] * (0.3 / 100);
                     return number_format((float)$fee, 2, '.', '');
-
                 }
 
                 return number_format(0.0, 2, '.', '');
