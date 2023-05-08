@@ -17,7 +17,8 @@ class CommissionFeeFactory
                 UserType::PRIVATE->value => PrivateClientWithdrawal::handleWithdraw($userInteractions),
                 UserType::BUSINESS->value => BusinessClientWithdrawal::handleWithdraw($userInteractions)
             },
-            OperationType::DEPOSIT->value => Deposit::handleDeposit($userInteractions)
+            OperationType::DEPOSIT->value => Deposit::handleDeposit($userInteractions),
+            default => throw new \Exception('Unsupported operation type'),
         };
     }
 }

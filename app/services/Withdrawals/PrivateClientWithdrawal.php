@@ -2,7 +2,6 @@
 
 namespace App\services\Withdrawals;
 
-use App\Actions\ChargePercentageAction;
 use App\Actions\ExchangeCurrency;
 use App\Interfaces\WithdrawInterface;
 use Carbon\Carbon;
@@ -42,8 +41,8 @@ class PrivateClientWithdrawal implements WithdrawInterface
             $lastInteraction = end(self::$withdrawalsThisWeek[$userInteractions['userId']]);
 
             // If interaction happens in same week
-            if (Carbon::parse($lastInteraction)->between($startDate, $endDate) &&
-                Carbon::parse($userInteractions['operationDate'])->between(
+            if (Carbon::parse($lastInteraction)->between($startDate, $endDate)
+                && Carbon::parse($userInteractions['operationDate'])->between(
                     $startDate,
                     $endDate
                 )) {
@@ -55,6 +54,7 @@ class PrivateClientWithdrawal implements WithdrawInterface
                 if ($totalWithdrawalsThisWeek > 1000) {
                     $exceededAmount = $totalWithdrawalsThisWeek - 1000;
                     $fee = $exceededAmount * (config('fees.withdraw.private') / 100);
+
                     return number_format((float)$fee, 2, '.', '');
                 }
 
@@ -63,6 +63,7 @@ class PrivateClientWithdrawal implements WithdrawInterface
                     return 0;
                 } elseif (count(self::$withdrawalsThisWeek[$userInteractions['userId']]) > 3) {
                     $fee = $userInteractions['amount'] * (config('fees.withdraw.private') / 100);
+
                     return number_format((float)$fee, 2, '.', '');
                 }
 
@@ -74,6 +75,7 @@ class PrivateClientWithdrawal implements WithdrawInterface
 
                 if ($userInteractions['amount'] > 1000) {
                     $exceededAmount = $userInteractions['amount'] - 1000;
+
                     return $exceededAmount * (config('fees.withdraw.private') / 100);
                 } else {
                     return 0;
@@ -87,8 +89,10 @@ class PrivateClientWithdrawal implements WithdrawInterface
             if ($userInteractions['amount'] > 1000) {
                 $exceededAmount = $userInteractions['amount'] - 1000;
                 $fee = $exceededAmount * (config('fees.withdraw.private') / 100);
+
                 return number_format((float)$fee, 2, '.', '');
             }
+
             return 0;
         }
     }

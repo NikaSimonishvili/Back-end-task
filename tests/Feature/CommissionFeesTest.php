@@ -26,7 +26,7 @@ class CommissionFeesTest extends TestCase
             ->assertSuccessful();
     }
 
-    public function test_exchange_currencies_to_EUR_successful()
+    public function test_exchange_currencies_to_euro_successful()
     {
 
         $USDToEUR = (new ExchangeCurrency())->handle(20, 'USD', 'EUR');

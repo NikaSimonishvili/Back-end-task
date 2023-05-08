@@ -2,8 +2,7 @@
 
 namespace App\Console\Commands;
 
-use App\Actions\SetCurrenciesAction;
-use App\services\CommissionFeeFactory;
+use App\services\TransactionsService;
 use Illuminate\Console\Command;
 
 class CommissionFee extends Command
@@ -25,37 +24,12 @@ class CommissionFee extends Command
     /**
      * Execute the console command.
      */
-    public function handle()
+    public function handle(TransactionsService $service)
     {
-        $results = [];
-        SetCurrenciesAction::handle();
+        $results = $service->handle($this->argument('fileName'));
 
-        $file = fopen(storage_path('app/public/' . $this->argument('fileName') . '.csv'), 'r');
-
-        if ($file) {
-            $users = [];
-            while (($data = fgetcsv($file, 0, ',')) !== false) {
-                $this->saveUsersDataInArray($users, $data);
-
-                $results[] = CommissionFeeFactory::getOperationType(end($users[$data[1]]));
-            }
-            fclose($file);
-
-            foreach ($results as $result) {
-                $this->info($result);
-            }
+        foreach ($results as $result) {
+            $this->info($result);
         }
-    }
-
-    private function saveUsersDataInArray(array &$users, array $data): void
-    {
-        $users[$data[1]][] = [
-            'userId' => $data[1],
-            'operationDate' => $data[0],
-            'userType' => $data[2],
-            'operationType' => $data[3],
-            'amount' => $data[4],
-            'operationCurrency' => $data[5],
-        ];
     }
 }
