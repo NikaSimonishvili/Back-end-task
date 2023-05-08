@@ -14,12 +14,10 @@ class PrivateClientWithdrawal implements WithdrawInterface
 
     public static function handleWithdraw($userInteractions)
     {
-        $transactionCurrency = $userInteractions['operationCurrency'];
-
         // Convert amount with needs
         $userInteractions['amount'] = ExchangeCurrency::handle(
             $userInteractions['amount'],
-            $transactionCurrency,
+            $userInteractions['operationCurrency'],
             'EUR'
         );
 
@@ -62,13 +60,13 @@ class PrivateClientWithdrawal implements WithdrawInterface
 
                 // If withdrawal is in the free range
                 if (count(self::$withdrawalsThisWeek[$userInteractions['userId']]) <= 3) {
-                    return number_format(0.0, 2, '.', '');
+                    return 0;
                 } elseif (count(self::$withdrawalsThisWeek[$userInteractions['userId']]) > 3) {
                     $fee = $userInteractions['amount'] * (config('fees.withdraw.private') / 100);
                     return number_format((float)$fee, 2, '.', '');
                 }
 
-                return number_format(0.0, 2, '.', '');
+                return 0;
             } // If interaction happens in different week
             else {
                 self::$withdrawalsThisWeek[$userInteractions['userId']] = [];
@@ -78,7 +76,7 @@ class PrivateClientWithdrawal implements WithdrawInterface
                     $exceededAmount = $userInteractions['amount'] - 1000;
                     return $exceededAmount * (config('fees.withdraw.private') / 100);
                 } else {
-                    return number_format(0.0, 2, '.', '');
+                    return 0;
                 }
             }
         } // If interaction happens for the first time
@@ -91,7 +89,7 @@ class PrivateClientWithdrawal implements WithdrawInterface
                 $fee = $exceededAmount * (config('fees.withdraw.private') / 100);
                 return number_format((float)$fee, 2, '.', '');
             }
-            return number_format(0.0, 2, '.', '');
+            return 0;
         }
     }
 }
